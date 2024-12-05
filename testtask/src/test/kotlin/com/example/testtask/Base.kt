@@ -5,6 +5,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.qameta.allure.Feature
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
+import org.junit.jupiter.api.TestInstance.Lifecycle.PER_METHOD
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -19,7 +20,7 @@ import org.springframework.context.annotation.ComponentScan
 @EnableAutoConfiguration(exclude = [DataSourceAutoConfiguration::class])
 @SpringBootTest
 @Feature("todo-list-service")
-@TestInstance(PER_CLASS)
+@TestInstance(PER_METHOD)
 class Base {
     //url's
     @Value("\${base-url.todoservice}")

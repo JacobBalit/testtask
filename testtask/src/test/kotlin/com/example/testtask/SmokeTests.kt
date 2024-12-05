@@ -7,7 +7,9 @@ import io.qameta.allure.Allure.step
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import org.springframework.http.HttpStatus
+import kotlin.random.Random.Default.nextInt
 
+@Suppress("UNCHECKED_CAST")
 @DisplayName("Tests per request /todo")
 class SmokeTests : Base() {
 
@@ -19,7 +21,7 @@ class SmokeTests : Base() {
     fun getEmptyList() {
         val response = baseService.getTasks()
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(response.body).isEmpty()
+        assertThat(response.body as Array<ToDoDTO>).isEmpty()
     }
 
     @Test
@@ -35,7 +37,7 @@ class SmokeTests : Base() {
         assertThat(responseGetTask.body).isEqualTo(arrayOf(createTaskRequest))
 
         //delete task
-        createdTodoId = responseGetTask.body!!
+        createdTodoId = responseGetTask.body!! as Array<ToDoDTO>
     }
 
     @Test
@@ -55,7 +57,7 @@ class SmokeTests : Base() {
         assertThat(responseGetTask.body).isEqualTo(arrayOf(updateTaskRequest))
 
         //delete task
-        createdTodoId = responseGetTask.body!!
+        createdTodoId = responseGetTask.body!! as Array<ToDoDTO>
     }
 
     @Test
@@ -80,7 +82,7 @@ class SmokeTests : Base() {
         assertThat(responseGetTask.body).isEqualTo(arrayOf(updateRequest))
 
         //delete task
-        createdTodoId = responseGetTask.body!!
+        createdTodoId = responseGetTask.body!! as Array<ToDoDTO>
     }
 
     @Test
@@ -102,6 +104,6 @@ class SmokeTests : Base() {
         assertThat(deleteTask.statusCode).isEqualTo(HttpStatus.NO_CONTENT)
 
         step("Check delete")
-        assertThat(baseService.getTasks().body).isEmpty()
+        assertThat(baseService.getTasks().body as Array<ToDoDTO>).isEmpty()
     }
 }

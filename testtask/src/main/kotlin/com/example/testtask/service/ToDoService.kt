@@ -25,7 +25,7 @@ class ToDoService(
     fun getTasks(
         offset: String? = null,
         limit: String? = null
-    ): ResponseEntity<Array<ToDoDTO>> {
+    ): ResponseEntity<*> {
         val queryParam = mutableMapOf<String, String>().apply {
             offset?.let { put("offset", it) }
             limit?.let { put("limit", it) }
@@ -36,9 +36,9 @@ class ToDoService(
                 exchangeIf2xx(
                     response,
                     Array<ToDoDTO>::class,
-                    Error::class
+                    String::class
                 )
-            }  as ResponseEntity<Array<ToDoDTO>>
+            }  as ResponseEntity<*>
     }
 
     fun postTasks(
