@@ -1,0 +1,7 @@
+spring:
+  datasource: initialize=false
+base-url:
+  todoservice: "http://localhost:8080/"
+
+logging.level.org.springframework.web.client.RestTemplate: DEBUG
+logging.level.io.ktor.client.plugins.websocket: DEBUG
