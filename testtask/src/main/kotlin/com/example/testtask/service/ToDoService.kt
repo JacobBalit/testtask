@@ -1,6 +1,5 @@
 package com.example.testtask.service
 
-import com.example.testtask.dto.Error
 import com.example.testtask.dto.ToDoDTO
 import com.example.testtask.utils.exchangeIf2xx
 import com.example.testtask.utils.paramsToRequest
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestClient
 
-@Suppress("UNCHECKED_CAST")
 @Service
 class ToDoService(
     @Autowired private val restClient: RestClient
@@ -20,7 +18,7 @@ class ToDoService(
     lateinit var toDoServiceUrl: String
 
     private fun pathTodoList(): String = "$toDoServiceUrl/todos"
-    private fun pathPutTodoList(id: Int): String = "$toDoServiceUrl/todos/$id"
+    private fun pathPutTodoList(id: Int?): String = "$toDoServiceUrl/todos/$id"
 
     fun getTasks(
         offset: String? = null,
@@ -38,56 +36,61 @@ class ToDoService(
                     Array<ToDoDTO>::class,
                     String::class
                 )
-            }  as ResponseEntity<*>
+            } as ResponseEntity<*>
     }
 
     fun postTasks(
         request: ToDoDTO
-    ): ResponseEntity<Array<ToDoDTO>> {
+    ): ResponseEntity<*> {
         return restClient.post()
             .uri(pathTodoList())
             .body(request)
             .exchange { _, response ->
                 exchangeIf2xx(
                     response,
-                    Array<ToDoDTO>::class,
-                    Error::class
+                    String::class,
+                    String::class
                 )
-            } as ResponseEntity<Array<ToDoDTO>>
+            } as ResponseEntity<*>
     }
 
     fun putTasks(
         id: Int,
-        request: ToDoDTO
+        request: ToDoDTO,
+        auth: String = "YWRtaW46YWRtaW4="
     ): ResponseEntity<*> {
         return restClient.put()
             .uri(pathPutTodoList(id))
+            .headers {
+                it
+                    .setBasicAuth(auth)
+            }
             .body(request)
             .exchange { _, response ->
                 exchangeIf2xx(
                     response,
                     Array<ToDoDTO>::class,
-                    Array<ToDoDTO>::class
+                    String::class
                 )
-            } as ResponseEntity<Array<ToDoDTO>>
+            } as ResponseEntity<*>
     }
 
     fun deleteTasks(
-        id: Int,
-        request: ToDoDTO
+        id: Int?,
+        auth: String = "YWRtaW46YWRtaW4="
     ): ResponseEntity<*> {
         return restClient.delete()
             .uri(pathPutTodoList(id))
-            .headers{
+            .headers {
                 it
-                    .setBasicAuth("YWRtaW46YWRtaW4=")
+                    .setBasicAuth(auth)
             }
             .exchange { _, response ->
                 exchangeIf2xx(
                     response,
                     String::class,
-                    Error::class
+                    String::class
                 )
-            } as ResponseEntity<Array<ToDoDTO>>
+            } as ResponseEntity<*>
     }
 }
