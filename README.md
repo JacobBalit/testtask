@@ -1,87 +1,88 @@
 # TODO App API Tests
 
-## Описание
-Проект включает API тесты для проверки функциональности сервиса TODO, реализованного на Spring 3.4.0 и Kotlin 1.9.25. 
-Основные сценарии тестирования охватывают запросы `GET`, `POST`, `PUT`, `DELETE` и взаимодействие через WebSocket.
+## Description
+The project includes API tests to validate the functionality of the TODO service implemented with Spring 3.4.0 and Kotlin 1.9.25 (JDK 17).  
+The primary test scenarios cover `GET`, `POST`, `PUT`, `DELETE` requests and interaction via WebSocket.
 
-## Структура проекта
-- **`src/main/kotlin/com.example.testtask`**: Содержит бизнес логику сервиса, DTO файлы , конфиги для работы с RestTemplate, приписана логка работы запросов.
-- **`src/test/kotlin/com.example.testtask`**: Тестовые классы и сценарии.
-- **`resources`**: Конфигурационные файлы, включая `application.yaml` для настроек тестовой среды.
+## Project Structure
+- **`src/main/kotlin/com.example.testtask`**: Contains the service business logic, DTO files, configurations for RestTemplate, and request processing logic.
+- **`src/test/kotlin/com.example.testtask`**: Test classes and scenarios.
+- **`resources`**: Configuration files, including `application.yaml` for test environment settings.
 
-## Стек технологий
-- **Язык:** Kotlin 1.9.25
-- **Фреймворк:** Spring Boot 3.4.0
+## Tech Stack
+- **Language:** Kotlin 1.9.25
+- **Framework:** Spring Boot 3.4.0
 - **Java:** 17
-- **Библиотеки для тестирования:**
+- **Testing Libraries:**
   - JUnit 5
   - RestAssured
   - WebSocketClient
 
-## Предварительные требования
-Перед запуском проекта необходимо убедиться, что у вас установлены:
+## Prerequisites
+Before running the project, ensure the following are installed:
 - **JDK 17**
-- **Gradle (или Maven)**
-- **Docker** (если требуется запуск тестов в контейнере)
-- **Postman** (опционально, для ручного тестирования API)
+- **Gradle (or Maven)**
+- **Docker** (if running tests in a container)
+- **Postman** (optional, for manual API testing)
 
-## Установка
-1. Клонируйте репозиторий:
+## Installation
+1. Clone the repository:
    ```bash
-   git clone <URL вашего репозитория>
+   git clone <repository URL>
+   cd <project directory>
 
-2. Соберите проект:
+
+2. Build the project:
 ./gradlew build
-   cd <папка проекта>
 
-3. Запустите приложение TODO, если оно не запущено:
+3. Run the TODO application if it's not already running:
 docker build -t todo-app:latest .
 docker run -p 8080:8080 todo-app:latest
 
-4. Для запуска всех тестов:
+4. Run all tests:
 ./gradlew clean test
 
-5. Результаты тестов будут доступны в папке build/reports/tests/test/index.html а также testtask/build/allure-results для формирования allure отчета
+5. Test results will be available in the folder build/reports/tests/test/index.html as well as in testtask/build/allure-results for generating an Allure report.
 
-## Сценарии тестирования
+## Test Scenarios
 **GET /todos**
 
-- **Успешное получение непустого списка TODOs.**
+- **Successful retrieval of a non-empty list of TODOs.**
 
-- **Проверка работы параметров offset и limit.**
+- **Validation of offset and limit parameters.**
 
-- **Поведение при некорректных параметрах.**
+- **Behavior with invalid parameters.**
 
 **POST /todos**
 
-- **Создание TODO с валидными данными.**
+- **Creation of a TODO with valid data.**
 
-- **Обработка некорректных данных и дубликатов.**
+- **Handling of invalid data and duplicates.**
 
 **PUT /todos/:id**
 
-- **Обновление TODO по существующему и несуществующему id.**
+- **Updating a TODO by an existing or non-existing ID.**
 
-- **Проверка частичного обновления.**
+- **Validation of partial updates.**
 
-- **Проверка обработки некорректных заголовков авторизации.**
+- **Handling of invalid authorization headers.**
 
 **DELETE /todos/:id**
 
-- **Удаление TODO по существующему и несуществующему id.**
+- **Deletion of a TODO by an existing or non-existing ID.**
 
-- **Проверка обработки некорректных заголовков авторизации.**
+- **Handling of invalid authorization headers.**
 
 **/ws**
 
-- **Подключение через WebSocket.**
+- **Connection via WebSocket.**
 
-- **Получение уведомлений о создании новых TODO.**
+- **Receiving notifications about newly created TODOs.**
 
-- **Обработка некорректных сообщений.**
+- **Handling of invalid messages.**
 
 ## application.yaml
-Файл конфигурации содержит настройки для базового URL и переменных окружения.
+The configuration file contains settings for the base URL and environment variables
 
 server:
   port: 8080
